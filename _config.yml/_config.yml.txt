@@ -1,0 +1,3 @@
+title: FreelanceFinder
+description: A freelancing platform
+theme: jekyll-theme-primer
