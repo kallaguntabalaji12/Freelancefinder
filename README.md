@@ -1,0 +1,1 @@
+A web-based platform that connects clients with freelancers for various projects. FreelanceFinder enables users to post jobs, bid on projects, and manage freelance contracts efficiently. Built with a focus on user experience, transparency, and scalability.
