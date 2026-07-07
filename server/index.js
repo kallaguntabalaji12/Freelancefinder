@@ -256,13 +256,14 @@ mongoose.connect('mongodb://localhost:27017/Freelancing',{
 
             const remainingApplications = await Application.find({projectId: application.projectId, status: "Pending"});
 
-            remainingApplications.map(async (appli)=>{
-                appli.status === 'Rejected';
+            // ensure remaining applications are marked rejected
+            for (const appli of remainingApplications) {
+                appli.status = 'Rejected';
                 await appli.save();
-            })
+            }
 
             project.freelancerId = freelancer.userId;
-            project.freelancerName = user.email;
+            project.freelancerName = user.username;
             project.budget = application.bidAmount;
 
             project.status = "Assigned";
@@ -311,13 +312,12 @@ mongoose.connect('mongodb://localhost:27017/Freelancing',{
             const project = await Project.findById(projectId);
 
             project.projectLink = projectLink;
-            project.manulaLink = manualLink;
+            project.manualLink = manualLink;
             project.submissionDescription = submissionDescription;
             project.submission = true;
 
             await project.save();
 
-            await project.save();
             res.status(200).json({message: "Project added"});
         }catch(err){
             res.status(500).json({error: err.message});
@@ -335,7 +335,8 @@ mongoose.connect('mongodb://localhost:27017/Freelancing',{
             project.submissionAccepted = true;
             project.status = "Completed";
 
-            freelancer.currentProjects.pop(project._id);
+            // remove project id from freelancer.currentProjects
+            freelancer.currentProjects = freelancer.currentProjects.filter(id => id.toString() !== project._id.toString());
             freelancer.completedProjects.push(project._id);
 
             freelancer.funds = parseInt(freelancer.funds) + parseInt(project.budget);
@@ -358,12 +359,12 @@ mongoose.connect('mongodb://localhost:27017/Freelancing',{
 
             project.submission =  false;
             project.projectLink =  "";
-            project.manulaLink =  "";
+            project.manualLink =  "";
             project.submissionDescription =  "";
 
             await project.save();
 
-            res.status(200).json({message: "submission approved"});
+            res.status(200).json({message: "submission rejected"});
         }catch(err){
             res.status(500).json({error: err.message});
         }
