@@ -3,20 +3,20 @@ import mongoose, { Schema, mongo } from "mongoose";
 const userSchema = mongoose.Schema({
     username: {
         type: String,
-        require: true
+        required: true
     },
     email: {
         type: String,
-        require: true,
+        required: true,
         unique: true
     },
     password: {
         type: String,
-        require: true
+        required: true
     },
     usertype:{
         type: String,
-        require: true
+        required: true
     }
 })
 
@@ -56,9 +56,18 @@ const projectSchema = mongoose.Schema({
     title: String,
     description: String,
     budget: Number,
-    skills: Array,
-    bids: Array,
-    bidAmounts: Array,
+    skills: {
+        type: Array,
+        default: []
+    },
+    bids: {
+        type: Array,
+        default: []
+    },
+    bidAmounts: {
+        type: Array,
+        default: []
+    },
     postedDate: String,
     status: {
         type: String,
@@ -79,7 +88,7 @@ const projectSchema = mongoose.Schema({
         type: String,
         default: ""
     },
-    manulaLink: {
+    manualLink: {
         type: String,
         default: ""
     },
@@ -116,10 +125,11 @@ const applicationSchema = mongoose.Schema({
 const chatSchema = mongoose.Schema({
     _id: {
         type: String,
-        require: true
+        required: true
     },
     messages: {
-        type: Array
+        type: Array,
+        default: []
     }
 })
 
