@@ -31,10 +31,11 @@ io.on("connection", (socket) =>{
     SocketHandler(socket);
 })
 
+// Use environment variables so Docker-compose can provide MONGO_URI and PORT
+const PORT = process.env.PORT || 6001;
+const MONGO_URI = process.env.MONGO_URI || 'mongodb://localhost:27017/Freelancing';
 
-const PORT = 6001;
-
-mongoose.connect('mongodb://localhost:27017/Freelancing',{
+mongoose.connect(MONGO_URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true
 }).then(()=>{
@@ -404,5 +405,6 @@ mongoose.connect('mongodb://localhost:27017/Freelancing',{
 
     server.listen(PORT, ()=>{
         console.log(`Running @ ${PORT}`);
+        console.log(`Mongo connected to ${MONGO_URI}`);
     });
 }).catch((e)=> console.log(`Error in db connection ${e}`));
